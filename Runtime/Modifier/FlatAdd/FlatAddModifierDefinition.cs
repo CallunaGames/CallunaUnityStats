@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "FlatAdd", menuName = "Settings/Stats/Layers/FlatAdd")]
+    [CreateAssetMenu(fileName = "FlatAdd", menuName = "Calluna Games/Stats/Layers/FlatAdd")]
     public class FlatAddModifierDefinition : PipelineLayerWithValuesDefinition
     {
         public override PipelineLayer Create(int priority)

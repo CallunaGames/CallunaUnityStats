@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Calluna.Stats
@@ -31,6 +32,7 @@ namespace Calluna.Stats
                 (d, i) => d.Create(i)).ToList();
             _layersWithValue.AddRange(_layers.OfType<PipelineLayerWithValues>());
             _orderedLayers = _layers.OrderBy(l => l.Priority);
+            CalculateValue();
         }
 
         public void SetModifierValue(ModifierValue modifier)
@@ -41,6 +43,7 @@ namespace Calluna.Stats
                 _idToModifiers.Add(modifier.Source.Id, modifiers);
             }
 
+            modifiers.Add(modifier);
             GetLayerWithValuesFor(modifier).Add(modifier);
             CalculateValue();
         }
@@ -71,7 +74,10 @@ namespace Calluna.Stats
 
         private PipelineLayerWithValues GetLayerWithValuesFor(ModifierValue modifier)
         {
-            return _layersWithValue.First(l => l.Definition == modifier.Layer);
+            PipelineLayerWithValues layer = _layersWithValue.FirstOrDefault(l => l.Definition == modifier.Layer);
+            if (layer == null)
+                throw new ArgumentException($"There is no pipeline layer with id {modifier?.Layer.Id} of stat {Definition.Id}");
+            return layer;
         }
 
         private void CalculateValue()

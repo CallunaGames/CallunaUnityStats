@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "Factor", menuName = "Settings/Stats/Layers/Factor")]
+    [CreateAssetMenu(fileName = "Factor", menuName = "Calluna Games/Stats/Layers/Factor")]
     public class FactorLayerDefinition : PipelineLayerWithValuesDefinition
     {
         public override PipelineLayer Create(int priority)

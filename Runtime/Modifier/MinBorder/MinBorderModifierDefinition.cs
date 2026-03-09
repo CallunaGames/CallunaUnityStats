@@ -2,7 +2,7 @@
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "MinBorder", menuName = "Settings/Stats/Layers/MinBorder")]
+    [CreateAssetMenu(fileName = "MinBorder", menuName = "Calluna Games/Stats/Layers/MinBorder")]
     public class MinBorderModifierDefinition : SimplePipelineLayerDefinition
     {
         [SerializeField] private float _minBorder;

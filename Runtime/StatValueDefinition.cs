@@ -2,7 +2,7 @@
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "StatValue", menuName = "Settings/Stats/StatValue")]
+    [CreateAssetMenu(fileName = "StatValue", menuName = "Calluna Games/Stats/StatValue")]
     public class StatValueDefinition : ScriptableObject
     {
         [field: SerializeField] public StatDefinition Definition { get; private set; }

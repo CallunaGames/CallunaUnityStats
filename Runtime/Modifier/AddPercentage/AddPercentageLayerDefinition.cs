@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "AddPercentage", menuName = "Settings/Stats/Layers/AddPercentage")]
+    [CreateAssetMenu(fileName = "AddPercentage", menuName = "Calluna Games/Stats/Layers/AddPercentage")]
     public class AddPercentageLayerDefinition : PipelineLayerWithValuesDefinition
     {
         public override PipelineLayer Create(int priority)

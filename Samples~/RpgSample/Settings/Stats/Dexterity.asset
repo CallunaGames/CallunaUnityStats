@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04b3a7099125dde48879781f00ef7565, type: 3}
+  m_Name: Dexterity
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: {fileID: 11400000, guid: 480d5826c65773149a742c384252a33f, type: 2}
+  _calculationPipeline:
+  - {fileID: 11400000, guid: 46b17f4739a882147acf3003793be901, type: 2}
+  - {fileID: 11400000, guid: 842b49e01733b084ea633752f598e695, type: 2}
+  - {fileID: 11400000, guid: 2a290617b2f62f644a4984a5d329c67b, type: 2}
+  - {fileID: 11400000, guid: 0699809ccba2f4644b20f9984eac3f03, type: 2}
+  - {fileID: 11400000, guid: 56672c2bc7b4df34cbaae0f270d9790d, type: 2}

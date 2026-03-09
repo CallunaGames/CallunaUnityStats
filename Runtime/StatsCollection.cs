@@ -5,6 +5,7 @@ namespace Calluna.Stats
     public class StatsCollection
     {
         private readonly Dictionary<StatId, Stat> _stats = new Dictionary<StatId, Stat>();
+        public IEnumerable<Stat> Stats => _stats.Values;
 
         public static StatsCollection Create(IEnumerable<Stat> stats)
         {
@@ -31,21 +32,20 @@ namespace Calluna.Stats
             _stats.Add(stat.Id, stat);
         }
 
-        public void Apply(ModifierSource source, StatChangeDefinition statChange)
+        public void Apply(ModifierSource source, StatChangesDefinition statChanges)
         {
-            Stat stat = _stats[statChange.Id];
-
-            foreach (ModiferValueDefinition definition in statChange.Modifiers)
+            foreach (ModiferValueDefinition definition in statChanges.Modifiers)
             {
+                Stat stat = _stats[definition.StatId];
                 stat.SetModifierValue(definition.Create(source));
             }
         }
 
-        public void Apply(ModifierSource source, IEnumerable<StatChangeDefinition> statChanges)
+        public void Remove(ModifierSource source)
         {
-            foreach (StatChangeDefinition statChange in statChanges)
+            foreach (Stat stat in _stats.Values)
             {
-                Apply(source, statChange);
+                stat.RemoveAllValuesOf(source);
             }
         }
 
