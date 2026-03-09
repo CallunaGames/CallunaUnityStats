@@ -2,18 +2,10 @@
 
 namespace Calluna.Stats
 {
-    public class RoundToIntModifier : Modifier
+    public class RoundToIntModifier : SimplePipelineLayer
     {
-        public override int Priority => 0;
-        
-        public RoundToIntModifier(ModifierSource source) : base(source)
+        public RoundToIntModifier(SimplePipelineLayerDefinition definition, int priority) : base(definition, priority)
         {
-            
-        }
-
-        public override void ApplyTo(CalculationContext context)
-        {
-            context.WithEndValueModifier(f => Mathf.RoundToInt(f));
         }
     }
 }

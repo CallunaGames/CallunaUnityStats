@@ -7,8 +7,8 @@ namespace Calluna.Stats
     public class StatDefinition : ScriptableObject
     {
         [field: SerializeField] public StatId Id { get; private set; }
-        [SerializeField] private List<ModifierDefinition> _modifiers = new List<ModifierDefinition>();
-        
-        public IReadOnlyList<ModifierDefinition> Modifiers => _modifiers;
+        [SerializeField] private List<PipelineLayerDefinition> _calculationPipeline = new List<PipelineLayerDefinition>();
+
+        public IReadOnlyList<PipelineLayerDefinition> CalculationPipeline => _calculationPipeline;
     }
 }

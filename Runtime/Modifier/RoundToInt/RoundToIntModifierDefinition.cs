@@ -2,17 +2,17 @@
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "RoundToInt", menuName = "Settings/Stat/Modifier/RoundToInt")]
-    public class RoundToIntModifierDefinition : ModifierDefinition
+    [CreateAssetMenu(fileName = "RoundToInt", menuName = "Settings/Stat/Layers/RoundToInt")]
+    public class RoundToIntModifierDefinition : SimplePipelineLayerDefinition
     {
-        public override Modifier Create()
+        public override PipelineLayer Create(int priority)
         {
-            return new RoundToIntModifier(CreateSource());
+            return new RoundToIntModifier(this, priority);
         }
 
-        public override Modifier Create(ModifierSource source)
+        public override float ApplyTo(float value)
         {
-            return new RoundToIntModifier(source);
+            return Mathf.RoundToInt(value);
         }
     }
 }

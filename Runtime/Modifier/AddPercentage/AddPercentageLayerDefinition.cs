@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "FlatAdd", menuName = "Settings/Stat/Layers/FlatAdd")]
-    public class FlatAddModifierDefinition : PipelineLayerWithValuesDefinition
+    [CreateAssetMenu(fileName = "AddPercentage", menuName = "Settings/Stat/Layers/AddPercentage")]
+    public class AddPercentageLayerDefinition : PipelineLayerWithValuesDefinition
     {
         public override PipelineLayer Create(int priority)
         {
-            return new FlatAddLayer(this, priority);
+            return new AddPercentageLayer(this, priority);
         }
 
         public override float ApplyTo(float value, IReadOnlyCollection<ModifierValue> values)
         {
-            return value + values.Sum(v => v.GetValue());
+            return value * (1f + values.Sum(v => v.GetValue()));
         }
     }
 }

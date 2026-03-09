@@ -35,9 +35,9 @@ namespace Calluna.Stats
         {
             Stat stat = _stats[statChange.Id];
 
-            foreach (ModifierDefinition definition in statChange.Modifiers)
+            foreach (ModiferValueDefinition definition in statChange.Modifiers)
             {
-                stat.SetModifier(definition.Create(source));
+                stat.SetModifierValue(definition.Create(source));
             }
         }
 

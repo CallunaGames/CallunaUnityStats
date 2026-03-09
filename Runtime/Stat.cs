@@ -11,33 +11,39 @@ namespace Calluna.Stats
         
         private float _value;
         private bool _isDirty = true;
-        private readonly Dictionary<string, List<Modifier>> _idToModifiers = new Dictionary<string, List<Modifier>>();
-        private IOrderedEnumerable<Modifier> _orderedModifiers = Enumerable.Empty<Modifier>().OrderBy(m => m.Priority);
+        private readonly Dictionary<string, List<ModifierValue>> _idToModifiers = new Dictionary<string, List<ModifierValue>>();
+        private readonly Dictionary<string, List<PipelineLayer>> _idToLayers = new Dictionary<string, List<PipelineLayer>>();
+        private List<PipelineLayerWithValues> _layersWithValue = new List<PipelineLayerWithValues>();
+        private IOrderedEnumerable<PipelineLayer> _orderedLayers;
+        private List<PipelineLayer> _layers;
         
         public Stat(StatDefinition definition, float baseValue)
         {
             Definition = definition;
             BaseValue = baseValue;
+            _layers = definition.CalculationPipeline.Select(
+                (d, i) => d.Create(i)).ToList();
+            _layersWithValue.AddRange(_layers.OfType<PipelineLayerWithValues>());
+            _orderedLayers = _layers.OrderBy(l => l.Priority);
         }
 
-        public void SetModifier(Modifier modifier)
+        public void SetModifierValue(ModifierValue modifier)
         {
-            if (!_idToModifiers.TryGetValue(modifier.Source.Id, out List<Modifier> modifiers))
+            if (!_idToModifiers.TryGetValue(modifier.Source.Id, out List<ModifierValue> modifiers))
             {
-                modifiers = new List<Modifier>();
+                modifiers = new List<ModifierValue>();
                 _idToModifiers.Add(modifier.Source.Id, modifiers);
             }
-            modifiers.Add(modifier);
-            OrderModifiers();
+            GetLayerWithValuesFor(modifier).Add(modifier);
             _isDirty = true;
         }
 
-        public void RemoveModifier(Modifier modifier)
+        public void RemoveModifierValue(ModifierValue modifier)
         {
-            if(!_idToModifiers.TryGetValue(modifier.Source.Id, out List<Modifier> modifiers))
+            if(!_idToModifiers.TryGetValue(modifier.Source.Id, out List<ModifierValue> modifiers))
                 return;
             modifiers.Remove(modifier);
-            OrderModifiers();
+            GetLayerWithValuesFor(modifier).Remove(modifier);
             _isDirty = true;
         }
 
@@ -54,27 +60,27 @@ namespace Calluna.Stats
             _isDirty = true;
         }
 
+        private PipelineLayerWithValues GetLayerWithValuesFor(ModifierValue modifier)
+        {
+            return _layersWithValue.First(l => l.Definition == modifier.Layer);
+        }
+
         private void CalculateValue()
         {
             _isDirty = false;
-            CalculationContext context = new CalculationContext(BaseValue);
-            foreach (Modifier modifier in _orderedModifiers)
+            float value = BaseValue;
+            foreach (PipelineLayer layer in _orderedLayers)
             {
-                modifier.ApplyTo(context);
+                value = layer.ApplyTo(value);
             }
-            _value = context.Calculate();
+            _value = value;
         }
 
-        private void OrderModifiers()
+        private IEnumerable<ModifierValue> GetAllModifierValues()
         {
-            _orderedModifiers = GetAllModifiers().OrderByDescending(m => m.Priority);
-        }
-
-        private IEnumerable<Modifier> GetAllModifiers()
-        {
-            foreach (List<Modifier> modifiers in _idToModifiers.Values)
+            foreach (List<ModifierValue> modifiers in _idToModifiers.Values)
             {
-                foreach (Modifier modifier in modifiers)
+                foreach (ModifierValue modifier in modifiers)
                 {
                     yield return modifier;
                 }

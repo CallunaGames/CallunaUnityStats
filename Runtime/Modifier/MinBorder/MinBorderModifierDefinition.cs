@@ -2,19 +2,19 @@
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "MinBorder", menuName = "Settings/Stat/Modifier/MinBorder")]
-    public class MinBorderModifierDefinition : ModifierDefinition
+    [CreateAssetMenu(fileName = "MinBorder", menuName = "Settings/Stat/Layers/MinBorder")]
+    public class MinBorderModifierDefinition : SimplePipelineLayerDefinition
     {
         [SerializeField] private float _minBorder;
         
-        public override Modifier Create()
+        public override PipelineLayer Create(int priority)
         {
-            return new MinBorderModifier(CreateSource(), _minBorder);
+            return new MinBorderLayer(this, priority);
         }
 
-        public override Modifier Create(ModifierSource source)
+        public override float ApplyTo(float value)
         {
-            return new MinBorderModifier(source, _minBorder);
+            return Mathf.Max(value, _minBorder);
         }
     }
 }
