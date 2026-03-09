@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "ConstantModifierValue", menuName = "Settings/Stat/Values/Constant")]
+    [CreateAssetMenu(fileName = "ConstantModifierValue", menuName = "Settings/Stats/Values/Constant")]
     public class ConstantModifierValueDefinition : ModiferValueDefinition
     {
         [field: SerializeField] public float Value { get; private set; }

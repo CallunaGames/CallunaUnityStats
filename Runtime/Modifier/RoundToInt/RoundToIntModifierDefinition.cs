@@ -2,7 +2,7 @@
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "RoundToInt", menuName = "Settings/Stat/Layers/RoundToInt")]
+    [CreateAssetMenu(fileName = "RoundToInt", menuName = "Settings/Stats/Layers/RoundToInt")]
     public class RoundToIntModifierDefinition : SimplePipelineLayerDefinition
     {
         public override PipelineLayer Create(int priority)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "StatId", menuName = "Settings/Stat/Id")]
+    [CreateAssetMenu(fileName = "StatId", menuName = "Settings/Stats/Id")]
     public class StatId : ScriptableObjectId, IEquatable<StatId>
     {
         public bool Equals(StatId other)

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "StatDefinition", menuName = "Settings/Stat/ValueDefinition")]
+    [CreateAssetMenu(fileName = "StatValue", menuName = "Settings/Stats/StatValue")]
     public class StatValueDefinition : ScriptableObject
     {
         [field: SerializeField] public StatDefinition Definition { get; private set; }

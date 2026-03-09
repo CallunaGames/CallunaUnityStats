@@ -8,15 +8,21 @@ namespace Calluna.Stats
         public StatId Id => Definition.Id;
         public StatDefinition Definition { get; }
         public float BaseValue { get; private set; }
-        
-        private float _value;
-        private bool _isDirty = true;
-        private readonly Dictionary<string, List<ModifierValue>> _idToModifiers = new Dictionary<string, List<ModifierValue>>();
-        private readonly Dictionary<string, List<PipelineLayer>> _idToLayers = new Dictionary<string, List<PipelineLayer>>();
+
+        public ReadonlyObservable<float> Value => _value;
+
+        private readonly Observable<float> _value = new Observable<float>();
+
+        private readonly Dictionary<string, List<ModifierValue>> _idToModifiers =
+            new Dictionary<string, List<ModifierValue>>();
+
+        private readonly Dictionary<string, List<PipelineLayer>> _idToLayers =
+            new Dictionary<string, List<PipelineLayer>>();
+
         private List<PipelineLayerWithValues> _layersWithValue = new List<PipelineLayerWithValues>();
         private IOrderedEnumerable<PipelineLayer> _orderedLayers;
         private List<PipelineLayer> _layers;
-        
+
         public Stat(StatDefinition definition, float baseValue)
         {
             Definition = definition;
@@ -34,30 +40,33 @@ namespace Calluna.Stats
                 modifiers = new List<ModifierValue>();
                 _idToModifiers.Add(modifier.Source.Id, modifiers);
             }
+
             GetLayerWithValuesFor(modifier).Add(modifier);
-            _isDirty = true;
+            CalculateValue();
         }
 
         public void RemoveModifierValue(ModifierValue modifier)
         {
-            if(!_idToModifiers.TryGetValue(modifier.Source.Id, out List<ModifierValue> modifiers))
+            if (!_idToModifiers.TryGetValue(modifier.Source.Id, out List<ModifierValue> modifiers))
                 return;
             modifiers.Remove(modifier);
             GetLayerWithValuesFor(modifier).Remove(modifier);
-            _isDirty = true;
+            CalculateValue();
         }
 
-        public float GetValue()
+        public void RemoveAllValuesOf(ModifierSource source)
         {
-            if (_isDirty)
-                CalculateValue();
-            return _value;
+            if (!_idToModifiers.Remove(source.Id, out List<ModifierValue> modifiers))
+                return;
+            foreach (ModifierValue modifier in modifiers)
+                GetLayerWithValuesFor(modifier).Remove(modifier);
+            CalculateValue();
         }
 
         public void SetBaseValue(float value)
         {
             BaseValue = value;
-            _isDirty = true;
+            CalculateValue();
         }
 
         private PipelineLayerWithValues GetLayerWithValuesFor(ModifierValue modifier)
@@ -67,24 +76,13 @@ namespace Calluna.Stats
 
         private void CalculateValue()
         {
-            _isDirty = false;
             float value = BaseValue;
             foreach (PipelineLayer layer in _orderedLayers)
             {
                 value = layer.ApplyTo(value);
             }
-            _value = value;
-        }
 
-        private IEnumerable<ModifierValue> GetAllModifierValues()
-        {
-            foreach (List<ModifierValue> modifiers in _idToModifiers.Values)
-            {
-                foreach (ModifierValue modifier in modifiers)
-                {
-                    yield return modifier;
-                }
-            }
+            _value.Value = value;
         }
     }
 }

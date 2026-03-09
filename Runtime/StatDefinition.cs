@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Calluna.Stats
 {
-    [CreateAssetMenu(fileName = "StatDefinition", menuName = "Settings/Stat/Definition")]
+    [CreateAssetMenu(fileName = "Stat", menuName = "Settings/Stats/Stat")]
     public class StatDefinition : ScriptableObject
     {
         [field: SerializeField] public StatId Id { get; private set; }
